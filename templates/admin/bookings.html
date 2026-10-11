@@ -1,0 +1,61 @@
+{% extends "admin/base.html" %}
+{% block title %}
+Bookings
+{% endblock %}
+
+{% block admin_content %}
+
+<h2 class="mb-4">All Bookings</h2>
+
+<table class="table table-bordered table-hover">
+
+    <thead class="table-success">
+
+        <tr>
+            <th>ID</th>
+            <th>User</th>
+            <th>Trek</th>
+            <th>Booking Date</th>
+            <th>Status</th>
+        </tr>
+
+    </thead>
+
+    <tbody>
+
+    {% for booking in bookings %}
+
+        <tr>
+
+            <td>{{ booking.id }}</td>
+
+            <td>{{ booking.user.full_name }}</td>
+
+            <td>{{ booking.trek.name }}</td>
+
+            <td>{{ booking.booking_date.strftime("%d-%m-%Y") }}</td>
+
+            <td>
+
+                {% if booking.status == "Booked" %}
+                    <span class="badge bg-primary">Booked</span>
+
+                {% elif booking.status == "Completed" %}
+                    <span class="badge bg-success">Completed</span>
+
+                {% else %}
+                    <span class="badge bg-danger">Cancelled</span>
+
+                {% endif %}
+
+            </td>
+
+        </tr>
+
+    {% endfor %}
+
+    </tbody>
+
+</table>
+
+{% endblock %}

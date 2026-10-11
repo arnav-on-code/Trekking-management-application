@@ -1,0 +1,537 @@
+openapi: 3.0.3
+info:
+  title: Trekking Management Application
+  version: 1.0.0
+  description: Route documentation for the Flask-based Trekking Management Application.
+
+servers:
+  - url: http://127.0.0.1:5000
+    description: Local development server
+
+tags:
+  - name: Authentication
+  - name: Admin
+  - name: User
+  - name: Staff
+
+paths:
+  /auth/login:
+    get:
+      tags: [Authentication]
+      summary: Display login page
+      responses:
+        "200":
+          description: Login page rendered
+    post:
+      tags: [Authentication]
+      summary: Authenticate user
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  format: password
+      responses:
+        "302":
+          description: Redirect to role-based dashboard
+
+  /auth/register:
+    get:
+      tags: [Authentication]
+      summary: Display registration page
+      responses:
+        "200":
+          description: Registration page rendered
+    post:
+      tags: [Authentication]
+      summary: Register a user
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required: [full_name, email, password, phone]
+              properties:
+                full_name:
+                  type: string
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  format: password
+                phone:
+                  type: string
+      responses:
+        "302":
+          description: Registration successful
+
+  /auth/logout:
+    get:
+      tags: [Authentication]
+      summary: Logout current user
+      responses:
+        "302":
+          description: Redirect to login
+
+  /admin/dashboard:
+    get:
+      tags: [Admin]
+      summary: Display admin dashboard
+      responses:
+        "200":
+          description: Dashboard rendered
+        "403":
+          description: Access denied
+
+  /admin/treks:
+    get:
+      tags: [Admin]
+      summary: List all treks
+      responses:
+        "200":
+          description: Trek list rendered
+
+  /admin/treks/add:
+    get:
+      tags: [Admin]
+      summary: Display add trek form
+      responses:
+        "200":
+          description: Form rendered
+    post:
+      tags: [Admin]
+      summary: Create a trek
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/TrekForm"
+      responses:
+        "302":
+          description: Trek created
+
+  /admin/treks/{trek_id}/edit:
+    get:
+      tags: [Admin]
+      summary: Display edit trek form
+      parameters:
+        - $ref: "#/components/parameters/TrekId"
+      responses:
+        "200":
+          description: Form rendered
+        "404":
+          description: Trek not found
+    post:
+      tags: [Admin]
+      summary: Update a trek
+      parameters:
+        - $ref: "#/components/parameters/TrekId"
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/TrekForm"
+      responses:
+        "302":
+          description: Trek updated
+        "404":
+          description: Trek not found
+
+  /admin/treks/{trek_id}/delete:
+    post:
+      tags: [Admin]
+      summary: Delete a trek
+      parameters:
+        - $ref: "#/components/parameters/TrekId"
+      responses:
+        "302":
+          description: Trek deleted
+
+  /admin/staff:
+    get:
+      tags: [Admin]
+      summary: Display staff members
+      responses:
+        "200":
+          description: Staff list rendered
+
+  /admin/staff/{staff_id}/approve:
+    post:
+      tags: [Admin]
+      summary: Approve a staff member
+      parameters:
+        - $ref: "#/components/parameters/StaffId"
+      responses:
+        "302":
+          description: Staff approved
+
+  /admin/staff/{staff_id}/blacklist:
+    post:
+      tags: [Admin]
+      summary: Blacklist a staff member
+      parameters:
+        - $ref: "#/components/parameters/StaffId"
+      responses:
+        "302":
+          description: Staff blacklisted
+
+  /admin/assign-staff:
+    get:
+      tags: [Admin]
+      summary: Display staff assignment page
+      responses:
+        "200":
+          description: Assignment page rendered
+    post:
+      tags: [Admin]
+      summary: Assign staff to a trek
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required: [staff_id, trek_id]
+              properties:
+                staff_id:
+                  type: integer
+                trek_id:
+                  type: integer
+      responses:
+        "302":
+          description: Staff assigned
+
+  /admin/users:
+    get:
+      tags: [Admin]
+      summary: Display registered users
+      responses:
+        "200":
+          description: User list rendered
+
+  /admin/bookings:
+    get:
+      tags: [Admin]
+      summary: Display all bookings
+      responses:
+        "200":
+          description: Booking list rendered
+
+  /admin/search:
+    get:
+      tags: [Admin]
+      summary: Display search page
+      responses:
+        "200":
+          description: Search page rendered
+    post:
+      tags: [Admin]
+      summary: Search users, staff, or treks
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required: [search_type, keyword]
+              properties:
+                search_type:
+                  type: string
+                  enum: [user, staff, trek]
+                keyword:
+                  type: string
+      responses:
+        "200":
+          description: Search results rendered
+
+  /user/dashboard:
+    get:
+      tags: [User]
+      summary: Display user dashboard
+      parameters:
+        - name: difficulty
+          in: query
+          schema:
+            type: string
+            enum: [Easy, Moderate, Hard]
+        - name: location
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: User dashboard rendered
+
+  /user/treks:
+    get:
+      tags: [User]
+      summary: Browse available treks
+      responses:
+        "200":
+          description: Trek list rendered
+
+  /user/treks/{trek_id}:
+    get:
+      tags: [User]
+      summary: View trek details
+      parameters:
+        - $ref: "#/components/parameters/TrekId"
+      responses:
+        "200":
+          description: Trek details rendered
+        "404":
+          description: Trek not found
+
+  /user/treks/{trek_id}/book:
+    get:
+      tags: [User]
+      summary: Book a trek
+      parameters:
+        - $ref: "#/components/parameters/TrekId"
+      responses:
+        "302":
+          description: Booking processed and redirected
+    post:
+      tags: [User]
+      summary: Book a trek
+      parameters:
+        - $ref: "#/components/parameters/TrekId"
+      responses:
+        "302":
+          description: Booking processed and redirected
+
+  /user/bookings:
+    get:
+      tags: [User]
+      summary: Display current user's bookings
+      responses:
+        "200":
+          description: Booking list rendered
+
+  /user/history:
+    get:
+      tags: [User]
+      summary: Display trekking history
+      responses:
+        "200":
+          description: Trekking history rendered
+
+  /user/profile:
+    get:
+      tags: [User]
+      summary: Display user profile
+      responses:
+        "200":
+          description: Profile rendered
+    post:
+      tags: [User]
+      summary: Update user profile
+      responses:
+        "302":
+          description: Profile updated
+
+  /staff/dashboard:
+    get:
+      tags: [Staff]
+      summary: Display staff dashboard
+      responses:
+        "200":
+          description: Staff dashboard rendered
+        "403":
+          description: Access denied
+
+  /staff/treks:
+    get:
+      tags: [Staff]
+      summary: Display assigned treks
+      responses:
+        "200":
+          description: Assigned treks rendered
+
+  /staff/treks/{trek_id}:
+    get:
+      tags: [Staff]
+      summary: Manage assigned trek
+      parameters:
+        - $ref: "#/components/parameters/TrekId"
+      responses:
+        "200":
+          description: Trek management page rendered
+        "404":
+          description: Trek or assignment not found
+
+  /staff/treks/{trek_id}/participants:
+    get:
+      tags: [Staff]
+      summary: Display participants for an assigned trek
+      parameters:
+        - $ref: "#/components/parameters/TrekId"
+      responses:
+        "200":
+          description: Participant list rendered
+
+  /staff/participants:
+    get:
+      tags: [Staff]
+      summary: Display participants from assigned treks
+      responses:
+        "200":
+          description: Participant list rendered
+
+  /staff/profile:
+    get:
+      tags: [Staff]
+      summary: Display staff profile
+      responses:
+        "200":
+          description: Profile rendered
+    post:
+      tags: [Staff]
+      summary: Update staff profile
+      responses:
+        "302":
+          description: Profile updated
+
+components:
+  parameters:
+    TrekId:
+      name: trek_id
+      in: path
+      required: true
+      schema:
+        type: integer
+    StaffId:
+      name: staff_id
+      in: path
+      required: true
+      schema:
+        type: integer
+
+  schemas:
+    TrekForm:
+      type: object
+      required:
+        - name
+        - location
+        - difficulty
+        - duration
+        - total_slots
+        - start_date
+        - end_date
+        - status
+      properties:
+        name:
+          type: string
+          maxLength: 100
+        location:
+          type: string
+          maxLength: 100
+        difficulty:
+          type: string
+          enum: [Easy, Moderate, Hard]
+        duration:
+          type: integer
+          minimum: 1
+        total_slots:
+          type: integer
+          minimum: 1
+        description:
+          type: string
+          nullable: true
+        start_date:
+          type: string
+          format: date
+        end_date:
+          type: string
+          format: date
+        status:
+          type: string
+          enum: [Pending, Approved, Open, Closed, Completed]
+
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        full_name:
+          type: string
+        email:
+          type: string
+          format: email
+        phone:
+          type: string
+        role:
+          type: string
+          enum: [admin, staff, user]
+        status:
+          type: string
+
+    Trek:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        location:
+          type: string
+        difficulty:
+          type: string
+        duration:
+          type: integer
+        total_slots:
+          type: integer
+        available_slots:
+          type: integer
+        description:
+          type: string
+          nullable: true
+        start_date:
+          type: string
+          format: date
+        end_date:
+          type: string
+          format: date
+        status:
+          type: string
+
+    Booking:
+      type: object
+      properties:
+        id:
+          type: integer
+        user_id:
+          type: integer
+        trek_id:
+          type: integer
+        booking_date:
+          type: string
+          format: date-time
+        status:
+          type: string
+          enum: [Booked, Cancelled, Completed]
+
+    TrekAssignment:
+      type: object
+      properties:
+        id:
+          type: integer
+        trek_id:
+          type: integer
+        staff_id:
+          type: integer
+        assigned_at:
+          type: string
+          format: date-time

@@ -1,0 +1,77 @@
+{% extends "staff/base.html" %}
+
+{% block title %}
+Profile
+{% endblock %}
+
+{% block staff_content %}
+
+<h2 class="mb-4">
+    Profile
+</h2>
+
+<div class="card shadow-sm">
+
+    <div class="card-body">
+
+        <form method="POST">
+
+            <div class="mb-3">
+
+                <label class="form-label">
+                    Full Name
+                </label>
+
+                <input
+                    type="text"
+                    name="full_name"
+                    class="form-control"
+                    value="{{ current_user.full_name }}"
+                    required>
+
+            </div>
+
+            <div class="mb-3">
+
+                <label class="form-label">
+                    Email
+                </label>
+
+                <input
+                    type="email"
+                    class="form-control"
+                    value="{{ current_user.email }}"
+                    readonly>
+
+            </div>
+
+            <div class="mb-3">
+
+                <label class="form-label">
+                    Phone
+                </label>
+
+                <input
+                    type="text"
+                    name="phone"
+                    class="form-control"
+                    value="{{ current_user.phone }}"
+                    required>
+
+            </div>
+
+            <button
+                type="submit"
+                class="btn btn-primary">
+
+                Update Profile
+
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

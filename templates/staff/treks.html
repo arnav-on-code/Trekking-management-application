@@ -1,0 +1,78 @@
+{% extends "staff/base.html" %}
+
+{% block title %}
+Assigned Treks
+{% endblock %}
+
+{% block staff_content %}
+
+<h2 class="mb-4">
+    Assigned Treks
+</h2>
+
+<table class="table table-striped table-hover align-middle">
+
+    <thead class="table-light">
+
+        <tr>
+            <th>ID</th>
+            <th>Trek Name</th>
+            <th>Location</th>
+            <th>Difficulty</th>
+            <th>Available Slots</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+
+    </thead>
+
+    <tbody>
+
+        {% for assignment in assignments %}
+
+        <tr>
+
+            <td>{{ assignment.trek.id }}</td>
+
+            <td>{{ assignment.trek.name }}</td>
+
+            <td>{{ assignment.trek.location }}</td>
+
+            <td>{{ assignment.trek.difficulty }}</td>
+
+            <td>{{ assignment.trek.available_slots }}</td>
+
+            <td>{{ assignment.trek.status }}</td>
+
+            <td>
+
+                <a href="{{ url_for('staff.manage_trek', trek_id=assignment.trek.id) }}"
+                   class="btn btn-primary btn-sm">
+
+                    Manage
+
+                </a>
+
+            </td>
+
+        </tr>
+
+        {% else %}
+
+        <tr>
+
+            <td colspan="7" class="text-center text-muted">
+
+                No treks have been assigned to you.
+
+            </td>
+
+        </tr>
+
+        {% endfor %}
+
+    </tbody>
+
+</table>
+
+{% endblock %}

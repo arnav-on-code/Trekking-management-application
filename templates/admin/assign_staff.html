@@ -1,0 +1,105 @@
+{% extends "admin/base.html" %}
+{% block title %}
+Assign Staff
+{% endblock %}
+
+{% block admin_content %}
+
+<div class="container">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-primary text-white">
+            <h3>Assign Staff to Trek</h3>
+        </div>
+
+        <div class="card-body">
+
+            <form method="POST">
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Select Trek
+                    </label>
+
+                    <select
+                        name="trek_id"
+                        class="form-select"
+                        required>
+
+                        <option value="">
+                            Select Trek
+                        </option>
+
+                        {% for trek in treks %}
+
+                        <option value="{{ trek.id }}">
+                            {{ trek.name }}
+                        </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Select Staff
+                    </label>
+
+                    <select
+                        name="staff_id"
+                        class="form-select"
+                        required>
+
+                        <option value="">
+                            Select Staff
+                        </option>
+
+                        {% for staff in staffs %}
+
+                        <option value="{{ staff.id }}">
+                            {{ staff.full_name }}
+                        </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+                <button
+                    type="submit"
+                    class="btn btn-primary">
+
+                    Assign Staff
+
+                </button>
+
+                <a
+                    href="{{ url_for('admin.dashboard') }}"
+                    class="btn btn-secondary">
+
+                    Cancel
+
+                </a>
+                <a
+                    href="{{ url_for('admin.dashboard') }}"
+                    class="btn btn-secondary">
+
+                    Back to Dashboard
+
+                </a>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

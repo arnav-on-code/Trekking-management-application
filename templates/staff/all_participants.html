@@ -1,0 +1,89 @@
+{% extends "staff/base.html" %}
+
+{% block title %}
+Participants
+{% endblock %}
+
+{% block staff_content %}
+
+<h2 class="mb-4">
+    Participants
+</h2>
+
+<div class="table-responsive">
+
+    <table class="table table-bordered table-hover align-middle">
+
+        <thead class="table-light">
+
+            <tr>
+
+                <th>Name</th>
+
+                <th>Email</th>
+
+                <th>Phone</th>
+
+                <th>Trek</th>
+
+                <th>Booking Status</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            {% for booking in bookings %}
+
+            <tr>
+
+                <td>
+                    {{ booking.user.full_name }}
+                </td>
+
+                <td>
+                    {{ booking.user.email }}
+                </td>
+
+                <td>
+                    {{ booking.user.phone }}
+                </td>
+
+                <td>
+                    {{ booking.trek.name }}
+                </td>
+
+                <td>
+
+                    <span class="badge bg-success">
+                        {{ booking.status }}
+                    </span>
+
+                </td>
+
+            </tr>
+
+            {% else %}
+
+            <tr>
+
+                <td
+                    colspan="5"
+                    class="text-center text-muted">
+
+                    No participants found.
+
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+{% endblock %}

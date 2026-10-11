@@ -1,0 +1,193 @@
+{% extends "staff/base.html" %}
+
+{% block title %}
+Staff Dashboard
+{% endblock %}
+
+{% block staff_content %}
+
+<h2 class="mb-4">
+    My Dashboard
+</h2>
+
+<div class="row g-4 mb-5">
+
+    <div class="col-md-4">
+
+        <div class="card shadow-sm h-100">
+
+            <div class="card-body">
+
+                <h6 class="text-muted">
+                    Assigned Treks
+                </h6>
+
+                <h2>
+                    {{ total_treks }}
+                </h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-4">
+
+        <div class="card shadow-sm h-100">
+
+            <div class="card-body">
+
+                <h6 class="text-muted">
+                    Total Participants
+                </h6>
+
+                <h2>
+                    {{ total_participants }}
+                </h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-4">
+
+        <div class="card shadow-sm h-100">
+
+            <div class="card-body">
+
+                <h6 class="text-muted">
+                    Open Treks
+                </h6>
+
+                <h2>
+                    {{ open_treks }}
+                </h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<h4 class="mb-3">
+    My Assigned Treks
+</h4>
+
+<div class="table-responsive">
+
+    <table class="table table-bordered table-hover align-middle">
+
+        <thead class="table-light">
+
+            <tr>
+
+                <th>Trek Name</th>
+
+                <th>Location</th>
+
+                <th>Participants</th>
+
+                <th>Slots</th>
+
+                <th>Status</th>
+
+                <th>Actions</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            {% for assignment in assignments %}
+
+            <tr>
+
+                <td>
+                    {{ assignment.trek.name }}
+                </td>
+
+                <td>
+                    {{ assignment.trek.location }}
+                </td>
+
+                <td>
+                    {{ participant_counts.get(assignment.trek.id, 0) }}
+                </td>
+
+                <td>
+                    {{ assignment.trek.available_slots }}
+                </td>
+
+                <td>
+
+                    {% if assignment.trek.status == "Open" %}
+
+                        <span class="badge bg-success">
+                            Open
+                        </span>
+
+                    {% elif assignment.trek.status == "Closed" %}
+
+                        <span class="badge bg-warning text-dark">
+                            Closed
+                        </span>
+
+                    {% elif assignment.trek.status == "Completed" %}
+
+                        <span class="badge bg-primary">
+                            Completed
+                        </span>
+
+                    {% else %}
+
+                        <span class="badge bg-secondary">
+                            {{ assignment.trek.status }}
+                        </span>
+
+                    {% endif %}
+
+                </td>
+
+                <td>
+
+                    <a
+                        href="{{ url_for('staff.manage_trek', trek_id=assignment.trek.id) }}"
+                        class="btn btn-outline-primary btn-sm">
+
+                        Manage
+
+                    </a>
+
+                </td>
+
+            </tr>
+
+            {% else %}
+
+            <tr>
+
+                <td
+                    colspan="6"
+                    class="text-center text-muted">
+
+                    No treks assigned.
+
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+{% endblock %}

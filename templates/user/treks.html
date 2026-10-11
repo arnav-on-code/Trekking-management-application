@@ -1,0 +1,149 @@
+{% extends "user/base.html" %}
+
+{% block title %}
+Available Treks
+{% endblock %}
+
+{% block user_content %}
+
+<h2 class="mb-4">
+    Search Treks
+</h2>
+
+<form method="GET">
+
+    <div class="row mb-4">
+
+        <div class="col-md-4">
+
+            <input
+                type="text"
+                name="location"
+                class="form-control"
+                placeholder="Location"
+                value="{{ request.args.get('location','') }}">
+
+        </div>
+
+        <div class="col-md-4">
+
+            <select
+                name="difficulty"
+                class="form-select">
+
+                <option value="">
+                    All Difficulties
+                </option>
+
+                <option value="Easy">
+                    Easy
+                </option>
+
+                <option value="Moderate">
+                    Moderate
+                </option>
+
+                <option value="Hard">
+                    Hard
+                </option>
+
+            </select>
+
+        </div>
+
+        <div class="col-md-4">
+
+            <button
+                class="btn btn-success">
+
+                Search
+
+            </button>
+
+        </div>
+
+    </div>
+
+</form>
+
+<table class="table table-striped table-hover">
+
+<thead>
+
+<tr>
+
+<th>Name</th>
+
+<th>Location</th>
+
+<th>Difficulty</th>
+
+<th>Slots</th>
+
+<th></th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for trek in treks %}
+
+<tr>
+
+<td>{{ trek.name }}</td>
+
+<td>{{ trek.location }}</td>
+
+<td>{{ trek.difficulty }}</td>
+
+<td>{{ trek.available_slots }}</td>
+
+<td>
+
+{% if trek.id in booked_trek_ids %}
+
+    <button
+        type="button"
+        class="btn btn-secondary btn-sm"
+        disabled>
+
+        Booked
+
+    </button>
+
+{% elif trek.available_slots <= 0 %}
+
+    <button
+        type="button"
+        class="btn btn-danger btn-sm"
+        disabled>
+
+        Full
+
+    </button>
+
+{% else %}
+
+    <a
+        href="{{ url_for('user.book_trek', trek_id=trek.id) }}"
+        class="btn btn-success btn-sm">
+
+        Book
+
+    </a>
+
+{% endif %}
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+{% endblock %}

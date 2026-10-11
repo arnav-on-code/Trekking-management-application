@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <div class="row">
+
+        <div class="col-md-2 bg-light border-end min-vh-100 pt-3">
+
+            <h5 class="text-center mb-4">
+                User Panel
+            </h5>
+
+            <div class="list-group">
+
+                <a href="{{ url_for('user.dashboard') }}"
+                   class="list-group-item list-group-item-action {% if request.endpoint == 'user.dashboard' %}active{% endif %}">
+                    Dashboard
+                </a>
+
+                <a href="{{ url_for('user.treks') }}"
+                   class="list-group-item list-group-item-action {% if request.endpoint == 'user.treks' %}active{% endif %}">
+                    Available Treks
+                </a>
+
+                <a href="{{ url_for('user.history') }}"
+                   class="list-group-item list-group-item-action {% if request.endpoint == 'user.history' %}active{% endif %}">
+                    Booking History
+                </a>
+
+                <a href="{{ url_for('user.profile') }}"
+                   class="list-group-item list-group-item-action {% if request.endpoint == 'user.profile' %}active{% endif %}">
+                    My Profile
+                </a>
+
+                <a href="{{ url_for('auth.logout') }}"
+                   class="list-group-item list-group-item-action text-danger">
+                    Logout
+                </a>
+                <a href="{{ url_for('user.bookings') }}"
+                    class="list-group-item list-group-item-action
+                    {% if request.endpoint == 'user.bookings' %}active{% endif %}">
+
+                        My Bookings
+
+                    </a>
+                    
+
+            </div>
+
+        </div>
+
+        <div class="col-md-10 p-4">
+
+            {% block user_content %}
+            {% endblock %}
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

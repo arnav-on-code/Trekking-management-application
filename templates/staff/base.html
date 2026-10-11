@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <div class="row">
+
+        <div class="col-md-2 bg-light border-end min-vh-100 pt-3">
+
+            <h5 class="text-center mb-4">
+                Staff Panel
+            </h5>
+
+            <div class="list-group">
+
+                <a href="{{ url_for('staff.dashboard') }}"
+                   class="list-group-item list-group-item-action
+                   {% if request.endpoint == 'staff.dashboard' %}active{% endif %}">
+
+                    Dashboard
+
+                </a>
+
+                <a href="{{ url_for('staff.assigned_treks') }}"
+                   class="list-group-item list-group-item-action
+                   {% if request.endpoint in ['staff.assigned_treks', 'staff.manage_trek'] %}active{% endif %}">
+
+                    My Treks
+
+                </a>
+
+                <a href="{{ url_for('staff.all_participants') }}"
+                   class="list-group-item list-group-item-action
+                   {% if request.endpoint in ['staff.all_participants', 'staff.participants'] %}active{% endif %}">
+
+                    Participants
+
+                </a>
+
+                <a href="{{ url_for('staff.profile') }}"
+                   class="list-group-item list-group-item-action
+                   {% if request.endpoint == 'staff.profile' %}active{% endif %}">
+
+                    Profile
+
+                </a>
+
+                <a href="{{ url_for('auth.logout') }}"
+                   class="list-group-item list-group-item-action text-danger">
+
+                    Logout
+
+                </a>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-10 p-4">
+
+            {% block staff_content %}
+            {% endblock %}
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

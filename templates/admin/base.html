@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <div class="row">
+
+        <div class="col-md-2 bg-light border-end min-vh-100 pt-3">
+
+            <h5 class="text-center mb-4">
+                Admin Panel
+            </h5>
+
+            <div class="list-group">
+
+                <a href="{{ url_for('admin.dashboard') }}"
+                   class="list-group-item list-group-item-action {% if request.endpoint == 'admin.dashboard' %}active{% endif %}">
+                    Dashboard
+                </a>
+
+                <a href="{{ url_for('admin.treks') }}"
+                   class="list-group-item list-group-item-action {% if request.endpoint in ['admin.treks', 'admin.add_trek', 'admin.edit_trek'] %}active{% endif %}">
+                    Treks
+                </a>
+
+                <a href="{{ url_for('admin.staffs') }}"
+                   class="list-group-item list-group-item-action {% if request.endpoint == 'admin.staffs' %}active{% endif %}">
+                    Staff
+                </a>
+
+                <a href="{{ url_for('admin.assign_staff') }}"
+                   class="list-group-item list-group-item-action {% if request.endpoint == 'admin.assign_staff' %}active{% endif %}">
+                    Assign Staff
+                </a>
+
+                <a href="{{ url_for('admin.users') }}"
+                   class="list-group-item list-group-item-action {% if request.endpoint == 'admin.users' %}active{% endif %}">
+                    Users
+                </a>
+
+                <a href="{{ url_for('admin.bookings') }}"
+                   class="list-group-item list-group-item-action {% if request.endpoint == 'admin.bookings' %}active{% endif %}">
+                    Bookings
+                </a>
+
+                <a href="{{ url_for('admin.search') }}"
+                   class="list-group-item list-group-item-action {% if request.endpoint == 'admin.search' %}active{% endif %}">
+                    Search
+                </a>
+
+                <a href="{{ url_for('auth.logout') }}"
+                   class="list-group-item list-group-item-action text-danger">
+                    Logout
+                </a>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-10 p-4">
+
+            {% block admin_content %}
+            {% endblock %}
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

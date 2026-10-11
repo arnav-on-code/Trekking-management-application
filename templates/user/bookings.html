@@ -1,0 +1,100 @@
+{% extends "user/base.html" %}
+
+{% block title %}
+My Bookings
+{% endblock %}
+
+{% block user_content %}
+
+<h2 class="mb-4">My Bookings</h2>
+
+<div class="table-responsive">
+
+    <table class="table table-bordered table-hover align-middle">
+
+        <thead class="table-light">
+
+            <tr>
+                <th>Trek Name</th>
+                <th>Booking Date</th>
+                <th>Trek Date</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            {% for booking in bookings %}
+
+            <tr>
+
+                <td>{{ booking.trek.name }}</td>
+
+                <td>
+                    {{ booking.booking_date.strftime("%d %B %Y") }}
+                </td>
+
+                <td>
+                    {{ booking.trek.start_date.strftime("%d %B %Y") }}
+                    -
+                    {{ booking.trek.end_date.strftime("%d %B %Y") }}
+                </td>
+
+                <td>
+
+                    {% if booking.status == "Booked" %}
+
+                        <span class="badge bg-success">
+                            Booked
+                        </span>
+
+                    {% elif booking.status == "Cancelled" %}
+
+                        <span class="badge bg-danger">
+                            Cancelled
+                        </span>
+
+                    {% else %}
+
+                        <span class="badge bg-secondary">
+                            {{ booking.status }}
+                        </span>
+
+                    {% endif %}
+
+                </td>
+
+                <td>
+
+                    <a href="{{ url_for('user.trek_details', trek_id=booking.trek.id) }}"
+                       class="btn btn-outline-primary btn-sm">
+
+                        View Details
+
+                    </a>
+
+                </td>
+
+            </tr>
+
+            {% else %}
+
+            <tr>
+
+                <td colspan="5" class="text-center text-muted">
+                    No bookings found.
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+{% endblock %}

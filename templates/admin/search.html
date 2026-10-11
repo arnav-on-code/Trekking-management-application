@@ -1,0 +1,207 @@
+{% extends "admin/base.html" %}
+
+{% block title %}
+Search
+{% endblock %}
+
+{% block admin_content %}
+
+<h2 class="mb-4">Search</h2>
+
+<form method="POST">
+
+    <div class="mb-3">
+
+        <label class="form-label">
+            Search Category
+        </label>
+
+        <select
+            name="search_type"
+            class="form-select"
+            required>
+
+            <option value="">-- Select Category --</option>
+
+            <option value="user">Users</option>
+
+            <option value="staff">Staff</option>
+
+            <option value="trek">Treks</option>
+
+        </select>
+
+    </div>
+
+    <div class="mb-3">
+
+        <label class="form-label">
+            Search Keyword
+        </label>
+
+        <input
+            type="text"
+            name="keyword"
+            class="form-control"
+            placeholder="Enter Name"
+            required>
+
+    </div>
+
+    <button
+        type="submit"
+        class="btn btn-success">
+
+        Search
+
+    </button>
+
+</form>
+
+<hr>
+
+<!-- USER RESULTS -->
+
+{% if users %}
+
+<h4>Users</h4>
+
+<table class="table table-bordered">
+
+    <thead>
+
+        <tr>
+
+            <th>ID</th>
+
+            <th>Name</th>
+
+            <th>Email</th>
+
+        </tr>
+
+    </thead>
+
+    <tbody>
+
+    {% for user in users %}
+
+        <tr>
+
+            <td>{{ user.id }}</td>
+
+            <td>{{ user.full_name }}</td>
+
+            <td>{{ user.email }}</td>
+
+        </tr>
+
+    {% endfor %}
+
+    </tbody>
+
+</table>
+
+{% endif %}
+
+<!-- STAFF RESULTS -->
+
+{% if staffs %}
+
+<h4>Staff</h4>
+
+<table class="table table-bordered">
+
+    <thead>
+
+        <tr>
+
+            <th>ID</th>
+
+            <th>Name</th>
+
+            <th>Email</th>
+
+            <th>Status</th>
+
+        </tr>
+
+    </thead>
+
+    <tbody>
+
+    {% for staff in staffs %}
+
+        <tr>
+
+            <td>{{ staff.id }}</td>
+
+            <td>{{ staff.full_name }}</td>
+
+            <td>{{ staff.email }}</td>
+
+            <td>{{ staff.status }}</td>
+
+        </tr>
+
+    {% endfor %}
+
+    </tbody>
+
+</table>
+
+{% endif %}
+
+<!-- TREK RESULTS -->
+
+{% if treks %}
+
+<h4>Treks</h4>
+
+<table class="table table-bordered">
+
+    <thead>
+
+        <tr>
+
+            <th>ID</th>
+
+            <th>Name</th>
+
+            <th>Location</th>
+
+            <th>Difficulty</th>
+
+            <th>Status</th>
+
+        </tr>
+
+    </thead>
+
+    <tbody>
+
+    {% for trek in treks %}
+
+        <tr>
+
+            <td>{{ trek.id }}</td>
+
+            <td>{{ trek.name }}</td>
+
+            <td>{{ trek.location }}</td>
+
+            <td>{{ trek.difficulty }}</td>
+
+            <td>{{ trek.status }}</td>
+
+        </tr>
+
+    {% endfor %}
+
+    </tbody>
+
+</table>
+
+{% endif %}
+
+{% endblock %}

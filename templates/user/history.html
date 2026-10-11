@@ -1,0 +1,63 @@
+{% extends "user/base.html" %}
+
+{% block title %}
+Booking History
+{% endblock %}
+
+{% block user_content %}
+
+<h2 class="mb-4">
+
+Booking History
+
+</h2>
+
+<table class="table table-striped">
+
+<thead>
+
+<tr>
+
+<th>Trek</th>
+
+<th>Date</th>
+
+<th>Status</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for booking in bookings %}
+
+<tr>
+
+<td>{{ booking.trek.name }}</td>
+
+<td>{{ booking.booking_date.strftime("%d-%m-%Y") }}</td>
+
+<td>{{ booking.status }}</td>
+
+</tr>
+
+{% else %}
+
+<tr>
+
+<td colspan="3">
+
+No bookings found.
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+{% endblock %}

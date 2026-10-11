@@ -1,0 +1,107 @@
+{% extends "admin/base.html" %}
+{% block title %}
+Manage Users
+{% endblock %}
+
+{% block admin_content %}
+
+<h2 class="mb-4">Manage Users</h2>
+
+<table class="table table-bordered table-hover">
+
+    <thead class="table-primary">
+
+        <tr>
+
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Status</th>
+            <th>Action</th>
+
+        </tr>
+
+    </thead>
+
+    <tbody>
+
+    {% for user in users %}
+
+        <tr>
+
+            <td>{{ user.id }}</td>
+
+            <td>{{ user.full_name }}</td>
+
+            <td>{{ user.email }}</td>
+
+            <td>{{ user.phone }}</td>
+
+            <td>
+
+                {% if user.status=="approved" %}
+
+                    <span class="badge bg-success">
+                        Approved
+                    </span>
+
+                {% else %}
+
+                    <span class="badge bg-danger">
+                        Blacklisted
+                    </span>
+
+                {% endif %}
+
+            </td>
+
+            <td>
+
+                {% if user.status=="approved" %}
+
+                <form
+                    method="POST"
+                    action="{{ url_for('admin.blacklist_user',user_id=user.id) }}"
+                    style="display:inline;">
+
+                    <button
+                        type="submit"
+                        class="btn btn-danger btn-sm">
+
+                        Blacklist
+
+                    </button>
+
+                </form>
+
+                {% else %}
+
+                <form
+                    method="POST"
+                    action="{{ url_for('admin.approve_user',user_id=user.id) }}"
+                    style="display:inline;">
+
+                    <button
+                        type="submit"
+                        class="btn btn-success btn-sm">
+
+                        Approve
+
+                    </button>
+
+                </form>
+
+                {% endif %}
+
+            </td>
+
+        </tr>
+
+    {% endfor %}
+
+    </tbody>
+
+</table>
+
+{% endblock %}
